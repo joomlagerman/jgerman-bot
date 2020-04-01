@@ -1,0 +1,12 @@
+## Ignore dev folder
+.vscode
+
+## Ignore installed composer stuff
+vendor/
+composer.lock
+
+## Ignore the constants file
+includes/constants.php
+
+# Ignore the content of the data folter
+data/*.data
