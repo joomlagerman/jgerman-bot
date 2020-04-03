@@ -157,7 +157,7 @@ class GithubApiHelper
 
 		foreach ($closedIssues as $issue)
 		{
-			$closedAt = new DateTime($issue->closed_at);
+			$closedAt = new \DateTime($issue->closed_at);
 
 			// Make sure only the closedAt date is checked and we ignore any additional comments or other updates to the issue
 			if ($closedAt->format('Y-m-d') !== $since->format('Y-m-d'))
