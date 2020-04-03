@@ -15,8 +15,14 @@ if (PHP_SAPI != 'cli')
 // Load the github base configuration
 require '../includes/github-base.php';
 
-$lastRunDateTime = new DateTime('now');
+$currentRunDateTime = new DateTime('now');
 $since = $githubApiHelper->getLatestRunDateTime();
+
+// Make sure we only run once a day
+if ($currentRunDateTime->format('Y-m-d') === $since->format('Y-m-d'))
+{
+	exit;
+}
 
 $closedTranslationIssues = $githubApiHelper->getClosedAndMergedTranslationIssuesList($since);
 
@@ -29,4 +35,4 @@ if (!empty($closedTranslationIssues) || !is_array($closedTranslationIssues))
 	}
 }
 
-$githubApiHelper->setLatestRunDateTime($lastRunDateTime);
+$githubApiHelper->setLatestRunDateTime($currentRunDateTime);
