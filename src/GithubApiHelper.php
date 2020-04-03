@@ -157,6 +157,13 @@ class GithubApiHelper
 
 		foreach ($closedIssues as $issue)
 		{
+			$closedAt = new DateTime($issue->closed_at);
+
+			if ($closedAt->format('Y-m-d') !== $since->format('Y-m-d'))
+			{
+				continue;
+			}
+
 			if ($this->github->pulls->isMerged($this->getOption('source.owner'), $this->getOption('source.repo'), $issue->number))
 			{
 				$closedAndMerged[] = $issue;
