@@ -37,7 +37,8 @@ class GithubApiHelper
 	/**
 	 * Constructor.
 	 *
-	 * @param   array  $options  Options to init the connection
+	 * @param   array  $githubOptions  The options for the Joomla\Github\Github object
+	 * @param   array  $options        The options for the GithubApiHelper
 	 *
 	 * @since   1.0
 	 */
@@ -56,12 +57,9 @@ class GithubApiHelper
 	}
 
 	/**
-	 * Returns the latest publication date for the item
+	 * Returns the latest run date for the item
 	 *
-	 * @param   string    $rssValue  The RSS value
-	 * @param   string    $rssType   The RSS type
-	 *
-	 * @return  DateTime  A DateTime Object with the latest publication date
+	 * @return  DateTime  A DateTime Object with the latest run date
 	 *
 	 * @since   1.0
 	 */
@@ -73,14 +71,16 @@ class GithubApiHelper
 		if (!is_file($dataFileName))
 		{
 			$now = new \DateTime('now');
-			file_put_contents($dataFileName, $now->format(\DateTime::ISO8601));
+			file_put_contents($dataFileName, $now->format('Y-m-d'));
 		}
 
 		return new \DateTime(file_get_contents($dataFileName));
 	}
 
 	/**
-	 * Sets the latest publication date to the given value
+	 * Sets the latest run date to the given value
+	 *
+	 * @param   DateTime  $lastRunDateTime  The last run DateTime
 	 *
 	 * @return  void
 	 *
@@ -95,12 +95,11 @@ class GithubApiHelper
 			unlink($dataFileName);
 		}
 
-		file_put_contents($dataFileName, $lastRunDateTime->format(\DateTime::ISO8601));
+		file_put_contents($dataFileName, $lastRunDateTime->format('Y-m-d'));
 	}
 
 	/**
 	 * Returns the file name to save the latest run DataTime
-	 *
 	 *
 	 * @return  string  The dataFile path
 	 *
@@ -151,7 +150,7 @@ class GithubApiHelper
 	 *
 	 * @since   1.0
 	 */
-	public function getClosedAndMergedTranslationIssuesList($since)
+	public function getClosedAndMergedTranslationIssuesList($since): array
 	{
 		// Get all closed issues with the translation label
 		$closedIssues = $this->getClosedTranslationIssuesList($since);
@@ -215,14 +214,11 @@ class GithubApiHelper
 		// Labels
 		$labels[] = $this->getOption('translation.label');
 
-		$pull = $this->getSourcePull($sourceTranslationIssue->number);
-		$labels[] = $this->getTranslationTargetBranchLabel($pull->base->ref);
+		$sourcePull = $this->getSourcePull($sourceTranslationIssue->number);
+		$labels[] = $this->getTranslationTargetBranchLabel($sourcePull->base->ref);
 
-		$sourcePullRequestUrl = $pull->_links->html->href;
 		$body = $this->getOption('translation.templagebody');
-		$body = str_replace('[sourcePullRequestUrl]', $sourcePullRequestUrl, $body);
-
-		// Get the changed ini files and add that to the body message with open checkboxes.
+		$body = str_replace('[sourcePullRequestUrl]', $sourcePull->_links->html->href, $body);
 
 		// Create the issue in the translation owner/repo
 		return $this->github->issues->create(
