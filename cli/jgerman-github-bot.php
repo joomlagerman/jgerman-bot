@@ -50,6 +50,6 @@ if (!empty($closedTranslationIssues) || !is_array($closedTranslationIssues))
 	$logHelper->writeLogMessage('We have ' . $createdTranslationRequestIssues . ' translation request issues created.');
 }
 
-$logHelper->writeLogMessage('Set the new latest run date to:' . $currentRunDateTime->format('Y-m-d'));
+$logHelper->writeLogMessage('Set the new latest run date to: ' . $currentRunDateTime->format('Y-m-d'));
 $githubApiHelper->setLatestRunDateTime($currentRunDateTime);
 $logHelper->writeLogMessage('End JGerman GitHub Bot');

@@ -24,7 +24,7 @@ class LogHelper
 	 */
 	public function __construct($options)
 	{
-		$this->logfile = ROOT_PATH . '/logs/' . date('d-m-Y') . '_' . $options['logName'] . '.log';
+		$this->logfile = ROOT_PATH . '/logs/' . date('Ymd') . '_' . $options['logName'] . '.log';
 	}
 
 	/**
@@ -57,7 +57,7 @@ class LogHelper
 	 *
 	 * @since   1.0
 	 */
-	private function writeLogMessage($message, $messageType = false): void
+	public function writeLogMessage($message, $messageType = false): void
 	{
 		file_put_contents($this->logfile, $this->getLogMessage($message, $messageType), FILE_APPEND | LOCK_EX);
 	}
