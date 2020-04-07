@@ -13,7 +13,7 @@ if (PHP_SAPI != 'cli')
 }
 
 // Load the github base configuration
-require '../includes/github-base.php';
+require dirname(__DIR__) . '/includes/github-base.php';
 
 $logHelper->writeLogMessage('Start JGerman GitHub Bot');
 

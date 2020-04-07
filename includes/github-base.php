@@ -6,6 +6,9 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
+// Set error reporting for development
+error_reporting(-1);
+
 // Load the system contstants
 require 'constants.php';
 
