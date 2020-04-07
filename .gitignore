@@ -10,3 +10,6 @@ includes/constants.php
 
 # Ignore the content of the data folter
 data/*.data
+
+# Ignore the content of the log folter
+logs/*.log

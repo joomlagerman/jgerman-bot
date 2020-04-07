@@ -15,24 +15,41 @@ if (PHP_SAPI != 'cli')
 // Load the github base configuration
 require '../includes/github-base.php';
 
+$logHelper->writeLogMessage('Start JGerman GitHub Bot');
+
 $currentRunDateTime = new DateTime('now');
-$since = $githubApiHelper->getLatestRunDateTime();
+$lastRunDate = $githubApiHelper->getLatestRunDateTime();
 
 // Make sure we only run once a day
-if ($currentRunDateTime->format('Y-m-d') === $since->format('Y-m-d'))
+if ($currentRunDateTime->format('Y-m-d') === $lastRunDate->format('Y-m-d'))
 {
+	$logHelper->writeLogMessage('We only run once a day so exiting here.');
+	$logHelper->writeLogMessage('End JGerman GitHub Bot');
 	exit;
 }
 
-$closedTranslationIssues = $githubApiHelper->getClosedAndMergedTranslationIssuesList($since);
+$closedTranslationIssues = $githubApiHelper->getClosedAndMergedTranslationIssuesList($lastRunDate);
+
+$logHelper->writeLogMessage('We have ' . count($closedTranslationIssues) . ' closed translation issues since the last run.');
 
 if (!empty($closedTranslationIssues) || !is_array($closedTranslationIssues))
 {
+	$createdTranslationRequestIssues = 0;
+
 	// We have issues to check
 	foreach ($closedTranslationIssues as $translationIssue)
 	{
-		$githubApiHelper->createNewTranslationRequestIssueFromMergedTranslationIssue($translationIssue);
+		$return = $githubApiHelper->createNewTranslationRequestIssueFromMergedTranslationIssue($translationIssue);
+
+		if ($return)
+		{
+			$createdTranslationRequestIssues++;
+		}
 	}
+
+	$logHelper->writeLogMessage('We have ' . $createdTranslationRequestIssues . ' translation request issues created.');
 }
 
+$logHelper->writeLogMessage('Set the new latest run date to:' . $currentRunDateTime->format('Y-m-d'));
 $githubApiHelper->setLatestRunDateTime($currentRunDateTime);
+$logHelper->writeLogMessage('End JGerman GitHub Bot');

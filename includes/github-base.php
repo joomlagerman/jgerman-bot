@@ -19,6 +19,9 @@ require ROOT_PATH . '/vendor/autoload.php';
 
 use Joomla\Registry\Registry;
 use joomlagerman\Helper\GithubApiHelper;
+use joomlagerman\Helper\LogHelper;
+
+$logHelper = new LogHelper(['logName' => 'jgerman']);
 
 $githubOptions = new Registry;
 $githubOptions->set('api.username', GITHUB_USERNAME);
