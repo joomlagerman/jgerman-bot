@@ -24,7 +24,7 @@ class LogHelper
 	 */
 	public function __construct($options)
 	{
-		$this->logfile = ROOT_PATH . '/logs/' . date('Ymd') . '_' . $options['logName'] . '.log';
+		$this->logfile = ROOT_PATH . '/logs/' . date('Ym') . '_' . $options['logName'] . '.log';
 	}
 
 	/**
