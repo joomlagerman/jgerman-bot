@@ -12,7 +12,19 @@ if (PHP_SAPI != 'cli')
 	exit;
 }
 
-// Load the github base configuration
+// Set error reporting for development
+error_reporting(-1);
+
+// Ensure we've initialized Composer
+if (!file_exists(ROOT_PATH . '/vendor/autoload.php'))
+{
+	exit(1);
+}
+
+require ROOT_PATH . '/vendor/autoload.php';
+
+// Load the contstants and the github base configuration
+require dirname(__DIR__) . '/includes/constants.php';
 require dirname(__DIR__) . '/includes/github-base.php';
 
 $logHelper->writeLogMessage('Start JGerman GitHub Bot');
@@ -41,10 +53,12 @@ if (!empty($closedTranslationIssues) || !is_array($closedTranslationIssues))
 	{
 		$return = $githubApiHelper->createNewTranslationRequestIssueFromMergedTranslationIssue($translationIssue);
 
-		if ($return)
+		if (!$return)
 		{
-			$createdTranslationRequestIssues++;
+			continue;
 		}
+
+		$createdTranslationRequestIssues++;
 	}
 
 	$logHelper->writeLogMessage('We have ' . $createdTranslationRequestIssues . ' translation request issues created.');
