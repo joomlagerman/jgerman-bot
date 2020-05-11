@@ -15,6 +15,9 @@ if (PHP_SAPI != 'cli')
 // Set error reporting for development
 error_reporting(-1);
 
+// Load the contstants
+require dirname(__DIR__) . '/includes/constants.php';
+
 // Ensure we've initialized Composer
 if (!file_exists(ROOT_PATH . '/vendor/autoload.php'))
 {
@@ -23,8 +26,7 @@ if (!file_exists(ROOT_PATH . '/vendor/autoload.php'))
 
 require ROOT_PATH . '/vendor/autoload.php';
 
-// Load the contstants and the github base configuration
-require dirname(__DIR__) . '/includes/constants.php';
+// Load the github base configuration
 require dirname(__DIR__) . '/includes/github-base.php';
 
 $logHelper->writeLogMessage('Start JGerman GitHub Bot');
