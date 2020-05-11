@@ -30,12 +30,12 @@ $options->set('translation.templagebody', GITHUB_TRANSLATION_TEMPLATE_BODY);
 $githubApiHelper = new GithubApiHelper($githubOptions, $options);
 
 $notifyerOptions = new Registry;
-$options->set('slack.enabled', true);
+$options->set('slack.enabled', NOTIFYER_SLACK_ENABED);
 $options->set('slack.webhookurl', NOTIFYER_SLACK_WEBHOOKURL);
 $options->set('slack.username', NOTIFYER_SLACK_USERNAME);
-$options->set('mattermost.enabled', true);
+$options->set('mattermost.enabled', NOTIFYER_MATTERMOST_ENABED);
 $options->set('mattermost.webhookurl', NOTIFYER_MATTERMOST_WEBHOOKURL);
-$options->set('telegram.enabled', true);
+$options->set('telegram.enabled', NOTIFYER_TELEGRAM_ENABED);
 $options->set('telegram.botToken', NOTIFYER_TELEGRAM_BOTTOKEN);
 $options->set('telegram.chatId', NOTIFYER_TELEGRAM_CHATID);
 $options->set('notifyer.messageTemplate', NOTIFYER_MESSAGE_TEMPLATE);
