@@ -121,7 +121,7 @@ class GithubApiHelper
 	 */
 	public function getOption($key)
 	{
-		return $this->options[$key] || null;
+		return isset($this->options[$key]) ? $this->options[$key] : null;
 	}
 
 	/**
