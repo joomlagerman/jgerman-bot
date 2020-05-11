@@ -121,7 +121,7 @@ class GithubApiHelper
 	 */
 	public function getOption($key)
 	{
-		return isset($this->options[$key]) ? $this->options[$key] : null;
+		return $this->options[$key] || null;
 	}
 
 	/**
@@ -154,6 +154,7 @@ class GithubApiHelper
 	{
 		// Get all closed issues with the translation label
 		$closedIssues = $this->getClosedTranslationIssuesList($since);
+		$closedAndMerged = [];
 
 		foreach ($closedIssues as $issue)
 		{
@@ -171,7 +172,7 @@ class GithubApiHelper
 			}
 		}
 
-		return isset($closedAndMerged) ? $closedAndMerged : [];
+		return $closedAndMerged;
 	}
 
 	/**
@@ -223,7 +224,7 @@ class GithubApiHelper
 		$labels[] = $this->getOption('translation.label');
 
 		$sourcePull = $this->getSourcePull($sourceTranslationIssue->number);
-		$labels[] = $this->getTranslationTargetBranchLabel($sourcePull->base->ref);
+		$labels[]   = $this->getTranslationTargetBranchLabel($sourcePull->base->ref);
 
 		$body = $this->getOption('translation.templagebody');
 		$body = str_replace('[sourcePullRequestUrl]', $sourcePull->_links->html->href, $body);
