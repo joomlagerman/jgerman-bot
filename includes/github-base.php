@@ -9,6 +9,7 @@
 use Joomla\Registry\Registry;
 use joomlagerman\Helper\GithubApiHelper;
 use joomlagerman\Helper\LogHelper;
+use joomlagerman\Helper\NotifyerHelper;
 
 $logHelper = new LogHelper(['logName' => 'jgerman']);
 
@@ -27,3 +28,16 @@ $options->set('translation.assigments', GITHUB_TRANSLATION_ASSIGMENTS);
 $options->set('translation.templagebody', GITHUB_TRANSLATION_TEMPLATE_BODY);
 
 $githubApiHelper = new GithubApiHelper($githubOptions, $options);
+
+$notifyerOptions = new Registry;
+$options->set('slack.enabled', true);
+$options->set('slack.webhookurl', NOTIFYER_SLACK_WEBHOOKURL);
+$options->set('slack.username', NOTIFYER_SLACK_USERNAME);
+$options->set('mattermost.enabled', true);
+$options->set('mattermost.webhookurl', NOTIFYER_MATTERMOST_WEBHOOKURL);
+$options->set('telegram.enabled', true);
+$options->set('telegram.botToken', NOTIFYER_TELEGRAM_BOTTOKEN);
+$options->set('telegram.chatId', NOTIFYER_TELEGRAM_CHATID);
+$options->set('notifyer.messageTemplate', NOTIFYER_MESSAGE_TEMPLATE);
+
+$notifierHelper = new NotifyerHelper($notifyerOptions);

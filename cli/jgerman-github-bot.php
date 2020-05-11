@@ -53,13 +53,18 @@ if (!empty($closedTranslationIssues) || !is_array($closedTranslationIssues))
 	// We have issues to check
 	foreach ($closedTranslationIssues as $translationIssue)
 	{
-		$return = $githubApiHelper->createNewTranslationRequestIssueFromMergedTranslationIssue($translationIssue);
+		$createdIssue = $githubApiHelper->createNewTranslationRequestIssueFromMergedTranslationIssue($translationIssue);
 
-		if (!$return)
+		if (!$createdIssue)
 		{
 			continue;
 		}
 
+		$notifierHelper->sendNotification([
+				'title'    => $createdIssue['title'],
+				'issueUrl' => $createdIssue['html_url'],
+			]
+		);
 		$createdTranslationRequestIssues++;
 	}
 
