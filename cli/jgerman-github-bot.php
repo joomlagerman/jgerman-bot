@@ -61,8 +61,8 @@ if (!empty($closedTranslationIssues) || !is_array($closedTranslationIssues))
 		}
 
 		$notifierHelper->sendNotification([
-				'title'    => $createdIssue['title'],
-				'issueUrl' => $createdIssue['html_url'],
+				'title'    => $createdIssue->title,
+				'issueUrl' => $createdIssue->html_url,
 			]
 		);
 		$createdTranslationRequestIssues++;

@@ -30,14 +30,14 @@ $options->set('translation.templagebody', GITHUB_TRANSLATION_TEMPLATE_BODY);
 $githubApiHelper = new GithubApiHelper($githubOptions, $options);
 
 $notifyerOptions = new Registry;
-$options->set('slack.enabled', NOTIFYER_SLACK_ENABED);
-$options->set('slack.webhookurl', NOTIFYER_SLACK_WEBHOOKURL);
-$options->set('slack.username', NOTIFYER_SLACK_USERNAME);
-$options->set('mattermost.enabled', NOTIFYER_MATTERMOST_ENABED);
-$options->set('mattermost.webhookurl', NOTIFYER_MATTERMOST_WEBHOOKURL);
-$options->set('telegram.enabled', NOTIFYER_TELEGRAM_ENABED);
-$options->set('telegram.botToken', NOTIFYER_TELEGRAM_BOTTOKEN);
-$options->set('telegram.chatId', NOTIFYER_TELEGRAM_CHATID);
-$options->set('notifyer.messageTemplate', NOTIFYER_MESSAGE_TEMPLATE);
+$notifyerOptions->set('slack.enabled', NOTIFYER_SLACK_ENABED);
+$notifyerOptions->set('slack.webhookurl', NOTIFYER_SLACK_WEBHOOKURL);
+$notifyerOptions->set('slack.username', NOTIFYER_SLACK_USERNAME);
+$notifyerOptions->set('mattermost.enabled', NOTIFYER_MATTERMOST_ENABED);
+$notifyerOptions->set('mattermost.webhookurl', NOTIFYER_MATTERMOST_WEBHOOKURL);
+$notifyerOptions->set('telegram.enabled', NOTIFYER_TELEGRAM_ENABED);
+$notifyerOptions->set('telegram.botToken', NOTIFYER_TELEGRAM_BOTTOKEN);
+$notifyerOptions->set('telegram.chatId', NOTIFYER_TELEGRAM_CHATID);
+$notifyerOptions->set('notifyer.messageTemplate', NOTIFYER_MESSAGE_TEMPLATE);
 
 $notifierHelper = new NotifyerHelper($notifyerOptions);
