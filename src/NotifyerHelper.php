@@ -80,7 +80,7 @@ class NotifyerHelper
 	 *
 	 * @since   1.0
 	 */
-	private function getNotificationMessage($messageData, $messageType = false): string
+	private function getIssueCreationNotificationMessage($messageData, $messageType = false): string
 	{
 		$message = $this->getOption('notifyer.messageTemplate');
 
@@ -98,7 +98,7 @@ class NotifyerHelper
 	}
 
 	/**
-	 * Send the Notifications
+	 * Send the Issue creation Notificaton
 	 *
 	 * @param   array   $messageData  The messagedata
 	 * @param   string  $messageType  The log messagetype
@@ -107,10 +107,42 @@ class NotifyerHelper
 	 *
 	 * @since   1.0
 	 */
-	public function sendNotification($messageData, $messageType = false): void
+	public function sendIssueCreationNotification($messageData, $messageType = false): void
 	{
-		$message = $this->getNotificationMessage($messageData, $messageType);
+		$this->sendNotificationMessage(
+			$this->getIssueCreationNotificationMessage(
+				$messageData,
+				$messageType
+			)
+		);
+	}
 
+	/**
+	 * Send the Log Notifications
+	 *
+	 * @param   array   $messageData  The messagedata
+	 * @param   string  $messageType  The log messagetype
+	 *
+	 * @return  void
+	 *
+	 * @since   1.0
+	 */
+	public function sendLogNotification($message): void
+	{
+		$this->sendNotificationMessage($message);
+	}
+
+	/**
+	 * Send the Notifications to the configured endpoints
+	 *
+	 * @param   array  $message  The messagt to be sended out
+	 *
+	 * @return  void
+	 *
+	 * @since   1.0
+	 */
+	private function sendNotificationMessage($message): void
+	{
 		if ($this->getOption('slack.enabled') === true)
 		{
 			$data = [

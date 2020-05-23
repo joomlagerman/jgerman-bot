@@ -30,6 +30,7 @@ require ROOT_PATH . '/vendor/autoload.php';
 require dirname(__DIR__) . '/includes/github-base.php';
 
 $logHelper->writeLogMessage('Start JGerman GitHub Bot');
+$notifierHelper->sendLogNotification('Start JGerman GitHub Bot');
 
 $currentRunDateTime = new DateTime('now');
 $lastRunDate = $githubApiHelper->getLatestRunDateTime();
@@ -38,13 +39,16 @@ $lastRunDate = $githubApiHelper->getLatestRunDateTime();
 if ($currentRunDateTime->format('Y-m-d') === $lastRunDate->format('Y-m-d'))
 {
 	$logHelper->writeLogMessage('We only run once a day so exiting here.');
+	$notifierHelper->sendLogNotification('We only run once a day so exiting here.');
 	$logHelper->writeLogMessage('End JGerman GitHub Bot');
+	$notifierHelper->sendLogNotification('End JGerman GitHub Bot');
 	exit;
 }
 
 $closedTranslationIssues = $githubApiHelper->getClosedAndMergedTranslationIssuesList($lastRunDate);
 
 $logHelper->writeLogMessage('We have ' . count($closedTranslationIssues) . ' closed translation issues since the last run.');
+$notifierHelper->sendLogNotification('We have ' . count($closedTranslationIssues) . ' closed translation issues since the last run.');
 
 if (!empty($closedTranslationIssues) || !is_array($closedTranslationIssues))
 {
@@ -60,7 +64,7 @@ if (!empty($closedTranslationIssues) || !is_array($closedTranslationIssues))
 			continue;
 		}
 
-		$notifierHelper->sendNotification([
+		$notifierHelper->sendIssueCreationNotification([
 				'title'    => $createdIssue->title,
 				'issueUrl' => $createdIssue->html_url,
 			]
@@ -69,8 +73,11 @@ if (!empty($closedTranslationIssues) || !is_array($closedTranslationIssues))
 	}
 
 	$logHelper->writeLogMessage('We have ' . $createdTranslationRequestIssues . ' translation request issues created.');
+	$notifierHelper->sendLogNotification('We have ' . $createdTranslationRequestIssues . ' translation request issues created.');
 }
 
 $logHelper->writeLogMessage('Set the new latest run date to: ' . $currentRunDateTime->format('Y-m-d'));
+$notifierHelper->sendLogNotification('Set the new latest run date to: ' . $currentRunDateTime->format('Y-m-d'));
 $githubApiHelper->setLatestRunDateTime($currentRunDateTime);
 $logHelper->writeLogMessage('End JGerman GitHub Bot');
+$notifierHelper->sendLogNotification('End JGerman GitHub Bot');
