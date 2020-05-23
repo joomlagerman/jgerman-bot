@@ -120,8 +120,7 @@ class NotifyerHelper
 	/**
 	 * Send the Log Notifications
 	 *
-	 * @param   array   $messageData  The messagedata
-	 * @param   string  $messageType  The log messagetype
+	 * @param   array  $message  The messagt to be sended out
 	 *
 	 * @return  void
 	 *
