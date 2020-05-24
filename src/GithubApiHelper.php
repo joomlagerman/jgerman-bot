@@ -9,7 +9,9 @@
 namespace joomlagerman\Helper;
 
 use Joomla\Github\Github;
+use Joomla\Http\HttpFactory;
 use Joomla\Registry\Registry;
+use Joomla\Uri\Uri;
 
 /**
  * Class for github
@@ -198,15 +200,41 @@ class GithubApiHelper
 	/**
 	 * Get an pull from the source github owner/repo
 	 *
-	 * @param   string  $issueId  The issue id
+	 * @param   string  $pullrequestId  The pullrequest id
 	 *
 	 * @return  object
 	 *
 	 * @since   1.0
 	 */
-	public function getSourcePull($issueId)
+	private function getSourcePull($pullrequestId)
 	{
-		return $this->github->pulls->get($this->getOption('source.owner'), $this->getOption('source.repo'), $issueId);
+		return $this->github->pulls->get($this->getOption('source.owner'), $this->getOption('source.repo'), $pullrequestId);
+	}
+
+	/**
+	 * Get the diff for the pullrequest
+	 *
+	 * @param   string  $pullrequestId  The pullrequest id
+	 *
+	 * @return  object
+	 *
+	 * @link  https://developer.github.com/v3/pulls/#get-a-single-pull-request
+	 * @link  https://developer.github.com/v3/media/#commits-commit-comparison-and-pull-requests
+	 *
+	 * @since   1.0
+	 */
+	private function getSourcePullDiff($pullrequestId)
+	{
+		$uri = new Uri(
+			'https://api.github.com/repos/'
+			. $this->getOption('source.owner')
+			. '/'
+			. $this->getOption('source.repo')
+			. '/pulls/'
+			. (int) $pullrequestId
+		);
+
+		return HttpFactory::getHttp()->get($uri->toString(), ['Accept' => 'application/vnd.github.v3.diff', 'User-Agent' => $this->getOption('userAgent')])->body;
 	}
 
 	/**
@@ -226,8 +254,12 @@ class GithubApiHelper
 		$sourcePull = $this->getSourcePull($sourceTranslationIssue->number);
 		$labels[]   = $this->getTranslationTargetBranchLabel($sourcePull->base->ref);
 
+		$sourcePullDiff = $this->getSourcePullDiff($sourceTranslationIssue->number);
+		$sourcePullDiffText = PHP_EOL . '```diff' . PHP_EOL . $sourcePullDiff . PHP_EOL . '```' . PHP_EOL;
+
 		$body = $this->getOption('translation.templagebody');
 		$body = str_replace('[sourcePullRequestUrl]', $sourcePull->_links->html->href, $body);
+		$body = str_replace('[sourcePullDiff]', $sourcePullDiffText, $body);
 
 		// Create the issue in the translation owner/repo
 		return $this->github->issues->create(
