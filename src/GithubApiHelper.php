@@ -255,7 +255,8 @@ class GithubApiHelper
 		$labels[]   = $this->getTranslationTargetBranchLabel($sourcePull->base->ref);
 
 		$sourcePullDiff = $this->getSourcePullDiff($sourceTranslationIssue->number);
-		$sourcePullDiffText = PHP_EOL . '```diff' . PHP_EOL . $sourcePullDiff . PHP_EOL . '```' . PHP_EOL;
+		$sourcePullDiffText = PHP_EOL . '<details>' . PHP_EOL . '<summary>Click to expand the diff!</summary>' . PHP_EOL . PHP_EOL .
+		'```diff' . PHP_EOL . $sourcePullDiff . PHP_EOL . '```' . PHP_EOL . '</details>' . PHP_EOL;
 
 		$body = $this->getOption('translation.templagebody');
 		$body = str_replace('[sourcePullRequestUrl]', $sourcePull->_links->html->href, $body);
