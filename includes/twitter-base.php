@@ -1,15 +1,27 @@
 <?php
 /**
- * JGerman GitHub Bot Configuration
+ * JGerman Twitter Configuration based on the Joomla! Framework
  *
  * @copyright  Copyright (C) 2020 J!German (www.jgerman.de) All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
+// Load the system contstants
+require 'constants.php';
+
+// Ensure we've initialized Composer
+if (!file_exists(ROOT_PATH . '/vendor/autoload.php'))
+{
+	exit(1);
+}
+
+require ROOT_PATH . '/vendor/autoload.php';
+
 use Joomla\Registry\Registry;
 use joomlagerman\Helper\GithubApiHelper;
 use joomlagerman\Helper\LogHelper;
 use joomlagerman\Helper\NotifyerHelper;
+use joomlagerman\Helper\TwitterApiHelper;
 
 // GitHub API Setup
 $githubOptions = new Registry;
@@ -17,14 +29,8 @@ $githubOptions->set('api.username', GITHUB_USERNAME);
 $githubOptions->set('headers', ['Authorization' => 'token ' . GITHUB_AUTHTOKEN]);
 
 $options = new Registry;
-$options->set('source.owner', GITHUB_SOURCE_OWNER);
-$options->set('source.repo', GITHUB_SOURCE_REPO);
-$options->set('source.watchlabel', GITHUB_SOURCE_WATCHLABEL);
 $options->set('translation.owner', GITHUB_TRANSLATION_OWNER);
 $options->set('translation.repo', GITHUB_TRANSLATION_REPO);
-$options->set('translation.label', GITHUB_TRANSLATION_LABEL);
-$options->set('translation.assigments', GITHUB_TRANSLATION_ASSIGMENTS);
-$options->set('translation.templagebody', GITHUB_TRANSLATION_TEMPLATE_BODY);
 
 $githubApiHelper = new GithubApiHelper($githubOptions, $options);
 
@@ -41,6 +47,16 @@ $notifyerOptions->set('mattermost.webhookurl', NOTIFYER_MATTERMOST_WEBHOOKURL);
 $notifyerOptions->set('telegram.enabled', NOTIFYER_TELEGRAM_ENABED);
 $notifyerOptions->set('telegram.botToken', NOTIFYER_TELEGRAM_BOTTOKEN);
 $notifyerOptions->set('telegram.chatId', NOTIFYER_TELEGRAM_CHATID);
-$notifyerOptions->set('notifyer.messageTemplate', NOTIFYER_GITHUB_ISSUE_MESSAGE_TEMPLATE);
+$notifyerOptions->set('notifyer.messageTemplate', NOTIFYER_TWITTER_TWEET_MESSAGE_TEMPLATE);
 
 $notifierHelper = new NotifyerHelper($notifyerOptions);
+
+// Twitter API Setup
+$twitterOptions = new Registry;
+$twitterOptions->set('consumerKey', TWITTER_CONSUMER_KEY);
+$twitterOptions->set('consumerSecret', TWITTER_CONSUMER_SECRET);
+$twitterOptions->set('accessToken', TWITTER_ACCESS_TOKEN);
+$twitterOptions->set('accessTokenSecret', TWITTER_ACCESS_TOKEN_SECRET);
+$twitterOptions->set('tweetTemplate', TWITTER_TWEET_TEMPLATE);
+
+$twitterApiHelper = new TwitterApiHelper($twitterOptions);
