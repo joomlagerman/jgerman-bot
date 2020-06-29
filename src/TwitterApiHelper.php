@@ -93,6 +93,20 @@ class TwitterApiHelper
 	 */
 	public function sendTweet($tweetText): stdClass
 	{
-		json_decode($this->twitter->post("statuses/update", ["status" => $tweetText]));
+		return json_decode($this->twitter->post('statuses/update', ['status' => $tweetText]));
+	}
+
+	/**
+	 * Verify the supplied Credentials
+	 *
+	 * @param   string  $tweetText The Text of the tweet
+	 *
+	 * @return  stdClass
+	 *
+	 * @since   1.0
+	 */
+	public function verifyCredentials(): stdClass
+	{
+		return json_decode($this->twitter->get('account/verify_credentials'));
 	}
 }
