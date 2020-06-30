@@ -6,17 +6,6 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-// Load the system contstants
-require 'constants.php';
-
-// Ensure we've initialized Composer
-if (!file_exists(ROOT_PATH . '/vendor/autoload.php'))
-{
-	exit(1);
-}
-
-require ROOT_PATH . '/vendor/autoload.php';
-
 use Joomla\Registry\Registry;
 use joomlagerman\Helper\GithubApiHelper;
 use joomlagerman\Helper\LogHelper;

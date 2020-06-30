@@ -87,13 +87,13 @@ class TwitterApiHelper
 	 *
 	 * @param   string  $tweetText The Text of the tweet
 	 *
-	 * @return  stdClass
+	 * @return  \stdClass
 	 *
 	 * @since   1.0
 	 */
-	public function sendTweet($tweetText): stdClass
+	public function sendTweet($tweetText): \stdClass
 	{
-		return json_decode($this->twitter->post('statuses/update', ['status' => $tweetText]));
+		return $this->twitter->post('statuses/update', ['status' => $tweetText]);
 	}
 
 	/**
@@ -101,12 +101,12 @@ class TwitterApiHelper
 	 *
 	 * @param   string  $tweetText The Text of the tweet
 	 *
-	 * @return  stdClass
+	 * @return  \stdClass
 	 *
 	 * @since   1.0
 	 */
-	public function verifyCredentials(): stdClass
+	public function verifyCredentials(): \stdClass
 	{
-		return json_decode($this->twitter->get('account/verify_credentials'));
+		return $this->twitter->get('account/verify_credentials');
 	}
 }
