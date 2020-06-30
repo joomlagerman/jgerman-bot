@@ -29,11 +29,43 @@ require ROOT_PATH . '/vendor/autoload.php';
 // Load the github base configuration
 require dirname(__DIR__) . '/includes/twitter-base.php';
 
-var_dump($twitterApiHelper->verifyCredentials());
+$logHelper->writeLogMessage('Start JGerman Twitter Bot');
+
+
+$latestGithubRelease = (string) $githubApiHelper->getLatestGithubRelease();
+$logHelper->writeLogMessage('Latest JGerman GitHub Release: ' . $latestGithubRelease);
+$latestPublishedRelease = (string) $githubApiHelper->getLatestPublishedRelease();
+$logHelper->writeLogMessage('Latest processed Release: ' . $latestPublishedRelease);
+
+
+$logHelper->writeLogMessage('End JGerman Twitter Bot');
+
+if (!version_compare($latestGithubRelease, $latestPublishedRelease, '>'))
+{
+	$logHelper->writeLogMessage('End JGerman Twitter Bot');
+}
+
+
+//setLatestPublishedRelease
+
+// https://github.com/joomlagerman/joomla/releases/tag/3.9.19v2
+$latestGithubRelease->html_url;
+
+// 3.9.19v2
+$latestGithubRelease->tag_name;
+
+// 3.9.19v2 for Joomla! 3.9.19
+$latestGithubRelease->name;
+
+// bool(false) / true
+$latestGithubRelease->prerelease;
+
+
+//var_dump($twitterApiHelper->sendTweet('Mein erster neuer Tweet.'));
 
 exit;
 
-$logHelper->writeLogMessage('Start JGerman Twitter Bot');
+
 
 // check latest release
 

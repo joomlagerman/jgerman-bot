@@ -67,7 +67,7 @@ class GithubApiHelper
 	 */
 	public function getLatestRunDateTime(): \DateTime
 	{
-		$dataFileName = $this->getDateFileName();
+		$dataFileName = $this->getDateFileName('lastrun.data');
 
 		// When there is no file create one with an empty date so it is now.
 		if (!is_file($dataFileName))
@@ -90,7 +90,7 @@ class GithubApiHelper
 	 */
 	public function setLatestRunDateTime($lastRunDateTime): void
 	{
-		$dataFileName = $this->getDateFileName();
+		$dataFileName = $this->getDateFileName('lastrun.data');
 
 		if (is_file($dataFileName))
 		{
@@ -103,13 +103,15 @@ class GithubApiHelper
 	/**
 	 * Returns the file name to save the latest run DataTime
 	 *
+	 * @param   string  $fileName  The data filename to use
+	 *
 	 * @return  string  The dataFile path
 	 *
 	 * @since   1.0
 	 */
-	public function getDateFileName(): string
+	private function getDateFileName($fileName): string
 	{
-		return $this->dataRootPath . 'lastrun.data';
+		return $this->dataRootPath . $fileName;
 	}
 
 	/**
@@ -292,5 +294,60 @@ class GithubApiHelper
 		}
 
 		return 'Joomla! ' . substr($targetBranch, 0, 1) . '.x';
+	}
+
+	/**
+	 * Returns the latest release information
+	 *
+	 * @param   string  $targetBranch  The branch target of the source repo
+	 *
+	 * @return  string  The label
+	 *
+	 * @since   1.0
+	 */
+	public function getLatestGithubRelease()
+	{
+		return $this->github->repositories->releases->getLatest($this->getOption('translation.owner'), $this->getOption('translation.repo'));
+	}
+
+	/**
+	 * Returns the latest run date for the item
+	 *
+	 * @return  string  The last processed release
+	 *
+	 * @since   1.0
+	 */
+	public function getLatestPublishedRelease(): string
+	{
+		$dataFileName = $this->getDateFileName('lastrelease.data');
+
+		// When there is no file create one with an empty date so it is now.
+		if (!is_file($dataFileName))
+		{
+			file_put_contents($dataFileName, '3.9.19v2');
+		}
+
+		return file_get_contents($dataFileName);
+	}
+
+	/**
+	 * Sets the latest run date to the given value
+	 *
+	 * @param   string  $lastPublishedRelease  The last processed release
+	 *
+	 * @return  void
+	 *
+	 * @since   1.0
+	 */
+	public function setLatestPublishedRelease($lastPublishedRelease): void
+	{
+		$dataFileName = $this->getDateFileName('lastrelease.data');
+
+		if (is_file($dataFileName))
+		{
+			unlink($dataFileName);
+		}
+
+		file_put_contents($dataFileName, $lastPublishedRelease);
 	}
 }
