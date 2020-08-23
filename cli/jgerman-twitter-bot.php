@@ -31,49 +31,90 @@ require dirname(__DIR__) . '/includes/twitter-base.php';
 
 $logHelper->writeLogMessage('Start JGerman Twitter Bot');
 
-
-$latestGithubRelease = (string) $githubApiHelper->getLatestGithubRelease();
-$logHelper->writeLogMessage('Latest JGerman GitHub Release: ' . $latestGithubRelease);
+$latestGithubRelease = $githubApiHelper->getLatestGithubRelease();
+$logHelper->writeLogMessage('Latest JGerman GitHub Release: ' . $latestGithubRelease->tag_name);
 $latestPublishedRelease = (string) $githubApiHelper->getLatestPublishedRelease();
 $logHelper->writeLogMessage('Latest processed Release: ' . $latestPublishedRelease);
 
 
 $logHelper->writeLogMessage('End JGerman Twitter Bot');
 
-if (!version_compare($latestGithubRelease, $latestPublishedRelease, '>'))
+if (!version_compare($latestGithubRelease->tag_name, $latestPublishedRelease, '>'))
 {
 	$logHelper->writeLogMessage('End JGerman Twitter Bot');
 }
 
+/**
+ * GitHub Varibales
+ * https://github.com/joomlagerman/joomla/releases/tag/3.9.19v2
+ * $latestGithubRelease->html_url;
+ * 3.9.19v2
+ * $latestGithubRelease->tag_name;
+ * // 3.9.19v2 for Joomla! 3.9.19
+ * $latestGithubRelease->name;
+ * // bool(true/false)
+ * $latestGithubRelease->prerelease
+ */
 
-//setLatestPublishedRelease
+if ($latestGithubRelease->prerelease === true)
+{
+	$logHelper->writeLogMessage('End JGerman Twitter Bot');
+}
 
-// https://github.com/joomlagerman/joomla/releases/tag/3.9.19v2
-$latestGithubRelease->html_url;
+$releaseName = str_replace('for', 'für', $latestGithubRelease->name);
 
-// 3.9.19v2
-$latestGithubRelease->tag_name;
+$tweetText = $twitterApiHelper->getOption('tweetTemplate');
+$tweetText = str_replace('[URL]', $latestGithubRelease->html_url, $tweetText);
+$tweetText = str_replace('[releaseNameVersion]', $releaseName, $tweetText);
 
-// 3.9.19v2 for Joomla! 3.9.19
-$latestGithubRelease->name;
+$createdTweet = $twitterApiHelper->sendTweet($tweetText);
 
-// bool(false) / true
-$latestGithubRelease->prerelease;
+/**
+ * object(stdClass)#26 (24) {
+ * ["created_at"]=>
+ * string(30) "Sun Aug 23 06:53:12 +0000 2020"
+ * ["id"]=>
+ * int(1297426645998084101)
+ * ["id_str"]=>
+ * string(19) "1297426645998084101"
+ * ["text"]=>
+ * string(146) "Wir haben gerade die deutsche Übersetzung in Version 3.9.20v1 für Joomla! 3.9.20 veröffentlicht. Die Übersetzung st… https://t.co/0aFKpzeyee"
+ * ["truncated"]=>
+ * bool(true)
+ * ["entities"]=>
+ * object(stdClass)#51 (4) {
+ *   ["hashtags"]=>
+ *   array(0) {
+ *   }
+ *   ["symbols"]=>
+ *   array(0) {
+ *   }
+ *   ["user_mentions"]=>
+ *   array(0) {
+ *   }
+ *   ["urls"]=>
+ *   array(1) {
+ *     [0]=>
+ *     object(stdClass)#52 (4) {
+ *     ["url"]=>
+ *     string(23) "https://t.co/0aFKpzeyee"
+ *     ["expanded_url"]=>
+ *     string(52) "https://twitter.com/i/web/status/1297426645998084101"
+ *     ["display_url"]=>
+ *     string(29) "twitter.com/i/web/status/1…"
+ *     ["indices"]=>
+ *     array(2) {
+ *       [0]=>
+ *       int(117)
+ *       [1]=>
+ *       int(140)
+ *     }
+ *     }
+ *   }
+ * }
+ */
 
-
-//var_dump($twitterApiHelper->sendTweet('Mein erster neuer Tweet.'));
-
-exit;
-
-
-
-// check latest release
-
-// check that is is a new release
-
-$notifierHelper->sendLogNotification('Start JGerman Twitter Bot');
-
-// post the tweet
+$githubApiHelper->setLatestPublishedRelease($latestGithubRelease->tag_name);
 
 // send notification
 $notifierHelper->sendTweetCreationNotification([
