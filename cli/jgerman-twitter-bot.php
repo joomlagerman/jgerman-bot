@@ -36,9 +36,6 @@ $logHelper->writeLogMessage('Latest JGerman GitHub Release: ' . $latestGithubRel
 $latestPublishedRelease = (string) $githubApiHelper->getLatestPublishedRelease();
 $logHelper->writeLogMessage('Latest processed Release: ' . $latestPublishedRelease);
 
-
-$logHelper->writeLogMessage('End JGerman Twitter Bot');
-
 if (!version_compare($latestGithubRelease->tag_name, $latestPublishedRelease, '>'))
 {
 	$logHelper->writeLogMessage('End JGerman Twitter Bot');
@@ -108,7 +105,6 @@ $createdTweet = $twitterApiHelper->sendTweet($tweetText);
  *       int(117)
  *       [1]=>
  *       int(140)
- *     }
  *     }
  *   }
  * }
