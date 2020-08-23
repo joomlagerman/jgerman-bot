@@ -80,7 +80,7 @@ class NotifyerHelper
 	 *
 	 * @since   1.0
 	 */
-	private function getIssueCreationNotificationMessage($messageData, $messageType = false): string
+	private function getMessageTemplateNotificationMessage($messageData, $messageType = false): string
 	{
 		$message = $this->getOption('notifyer.messageTemplate');
 
@@ -98,7 +98,7 @@ class NotifyerHelper
 	}
 
 	/**
-	 * Send the Issue creation Notificaton
+	 * Send the Notificaton for the given message tempalte
 	 *
 	 * @param   array   $messageData  The messagedata
 	 * @param   string  $messageType  The log messagetype
@@ -107,10 +107,10 @@ class NotifyerHelper
 	 *
 	 * @since   1.0
 	 */
-	public function sendIssueCreationNotification($messageData, $messageType = false): void
+	public function sendMessageTemplateNotification($messageData, $messageType = false): void
 	{
 		$this->sendNotificationMessage(
-			$this->getIssueCreationNotificationMessage(
+			$this->getMessageTemplateNotificationMessage(
 				$messageData,
 				$messageType
 			)

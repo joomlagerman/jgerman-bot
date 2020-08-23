@@ -36,11 +36,6 @@ $logHelper->writeLogMessage('Latest JGerman GitHub Release: ' . $latestGithubRel
 $latestPublishedRelease = (string) $githubApiHelper->getLatestPublishedRelease();
 $logHelper->writeLogMessage('Latest processed Release: ' . $latestPublishedRelease);
 
-if (!version_compare($latestGithubRelease->tag_name, $latestPublishedRelease, '>'))
-{
-	$logHelper->writeLogMessage('End JGerman Twitter Bot');
-}
-
 /**
  * GitHub Varibales
  * https://github.com/joomlagerman/joomla/releases/tag/3.9.19v2
@@ -53,10 +48,19 @@ if (!version_compare($latestGithubRelease->tag_name, $latestPublishedRelease, '>
  * $latestGithubRelease->prerelease
  */
 
+if (!version_compare($latestGithubRelease->tag_name, $latestPublishedRelease, '>'))
+{
+	$logHelper->writeLogMessage('End JGerman Twitter Bot');
+	exit;
+}
+
 if ($latestGithubRelease->prerelease === true)
 {
 	$logHelper->writeLogMessage('End JGerman Twitter Bot');
+	exit;
 }
+
+$notifierHelper->sendLogNotification('Start JGerman Twitter Bot');
 
 $releaseName = str_replace('for', 'für', $latestGithubRelease->name);
 
@@ -113,7 +117,7 @@ $createdTweet = $twitterApiHelper->sendTweet($tweetText);
 $githubApiHelper->setLatestPublishedRelease($latestGithubRelease->tag_name);
 
 // send notification
-$notifierHelper->sendTweetCreationNotification([
+$notifierHelper->sendMessageTemplateNotification([
 	'tweetText' => $createdTweet->text,
 	'tweetUrl'  => 'https://twitter.com/joomlagerman/status/' . $createdTweet->id,
 ]);

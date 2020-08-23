@@ -64,7 +64,7 @@ if (!empty($closedTranslationIssues) || !is_array($closedTranslationIssues))
 			continue;
 		}
 
-		$notifierHelper->sendIssueCreationNotification([
+		$notifierHelper->sendMessageTemplateNotification([
 				'title'    => $createdIssue->title,
 				'issueUrl' => $createdIssue->html_url,
 			]
