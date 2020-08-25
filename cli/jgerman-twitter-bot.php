@@ -60,7 +60,7 @@ if ($latestGithubRelease->prerelease === true)
 	exit;
 }
 
-$notifierHelper->sendLogNotification('Start JGerman Twitter Bot');
+
 
 $releaseName = str_replace('for', 'für', $latestGithubRelease->name);
 
@@ -68,7 +68,18 @@ $tweetText = $twitterApiHelper->getOption('tweetTemplate');
 $tweetText = str_replace('[URL]', $latestGithubRelease->html_url, $tweetText);
 $tweetText = str_replace('[releaseNameVersion]', $releaseName, $tweetText);
 
-$createdTweet = $twitterApiHelper->sendTweet($tweetText);
+try
+{
+	$createdTweet = $twitterApiHelper->sendTweet($tweetText);
+}
+catch (\Throwable $th)
+{
+	$notifierHelper->sendLogNotification('There was an issue connecting to twitter to send the tweet.');
+	$logHelper->writeLogMessage('End JGerman Twitter Bot');
+	$notifierHelper->sendLogNotification('End JGerman Twitter Bot');
+
+	exit;
+}
 
 /**
  * object(stdClass)#26 (24) {
