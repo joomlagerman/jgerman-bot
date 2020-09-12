@@ -60,8 +60,6 @@ if ($latestGithubRelease->prerelease === true)
 	exit;
 }
 
-
-
 $releaseName = str_replace('for', 'für', $latestGithubRelease->name);
 
 $tweetText = $twitterApiHelper->getOption('tweetTemplate');
