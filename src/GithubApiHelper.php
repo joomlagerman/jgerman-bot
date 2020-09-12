@@ -313,21 +313,23 @@ class GithubApiHelper
 	/**
 	 * Returns the latest run date for the item
 	 *
+	 * @param   string  $branch  The core release branch
+	 *
 	 * @return  string  The last processed release
 	 *
 	 * @since   1.0
 	 */
-	public function getLatestPublishedRelease(): string
+	public function getLatestPublishedRelease($branch): string
 	{
-		$dataFileName = $this->getDateFileName('lastrelease.data');
+		$dataFileName = $this->getDateFileName('lastrelease' . $branch . '.data');
 
 		// When there is no file create one with an empty date so it is now.
 		if (!is_file($dataFileName))
 		{
-			file_put_contents($dataFileName, '3.9.19v2');
+			file_put_contents($dataFileName, $branch . '.0.v1');
 		}
 
-		return file_get_contents($dataFileName);
+		return trim(file_get_contents($dataFileName));
 	}
 
 	/**
