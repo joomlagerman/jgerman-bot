@@ -42,7 +42,7 @@ $latestPublishedRelease = (string) $githubApiHelper->getLatestPublishedRelease($
 $logHelper->writeLogMessage('Latest processed Release: ' . $latestPublishedRelease);
 
 /**
- * GitHub Varibales
+ * GitHub Variables
  * https://github.com/joomlagerman/joomla/releases/tag/3.9.19v2
  * $latestGithubRelease->html_url;
  * 3.9.19v2
