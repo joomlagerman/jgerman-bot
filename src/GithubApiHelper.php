@@ -326,7 +326,7 @@ class GithubApiHelper
 		// When there is no file create one with an empty date so it is now.
 		if (!is_file($dataFileName))
 		{
-			file_put_contents($dataFileName, $branch . '.0.v1');
+			file_put_contents($dataFileName, $branch . '.0');
 		}
 
 		return trim(file_get_contents($dataFileName));
