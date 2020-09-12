@@ -36,8 +36,9 @@ $logHelper->writeLogMessage('Latest JGerman GitHub Release: ' . $latestGithubRel
 
 // Detect the branch name so we check against the correct target branch history file
 $branchName = explode('.', $latestGithubRelease->tag_name);
+$coreReleaseBranchName = $branchName[0] . '.' . $branchName[1];
 
-$latestPublishedRelease = (string) $githubApiHelper->getLatestPublishedRelease($branchName[0] . '.' . $branchName[1]);
+$latestPublishedRelease = (string) $githubApiHelper->getLatestPublishedRelease($coreReleaseBranchName);
 $logHelper->writeLogMessage('Latest processed Release: ' . $latestPublishedRelease);
 
 /**
@@ -70,13 +71,9 @@ $tweetText = $twitterApiHelper->getOption('tweetTemplate');
 $tweetText = str_replace('[URL]', $latestGithubRelease->html_url, $tweetText);
 $tweetText = str_replace('[releaseNameVersion]', $releaseName, $tweetText);
 
-print_r($tweetText);
-
-exit;
-
 try
 {
-	//$createdTweet = $twitterApiHelper->sendTweet($tweetText);
+	$createdTweet = $twitterApiHelper->sendTweet($tweetText);
 }
 catch (\Throwable $th)
 {
@@ -131,7 +128,7 @@ catch (\Throwable $th)
  * }
  */
 
-$githubApiHelper->setLatestPublishedRelease($latestGithubRelease->tag_name);
+$githubApiHelper->setLatestPublishedRelease($coreReleaseBranchName, $latestGithubRelease->tag_name);
 
 // send notification
 $notifierHelper->sendMessageTemplateNotification([

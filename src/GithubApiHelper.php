@@ -326,7 +326,7 @@ class GithubApiHelper
 		// When there is no file create one with an empty date so it is now.
 		if (!is_file($dataFileName))
 		{
-			file_put_contents($dataFileName, $branch . '.0');
+			file_put_contents($dataFileName, $branch . '.0v0');
 		}
 
 		return trim(file_get_contents($dataFileName));
@@ -335,15 +335,16 @@ class GithubApiHelper
 	/**
 	 * Sets the latest run date to the given value
 	 *
+	 * @param   string  $branch                The core release branch
 	 * @param   string  $lastPublishedRelease  The last processed release
 	 *
 	 * @return  void
 	 *
 	 * @since   1.0
 	 */
-	public function setLatestPublishedRelease($lastPublishedRelease): void
+	public function setLatestPublishedRelease($branch, $lastPublishedRelease): void
 	{
-		$dataFileName = $this->getDateFileName('lastrelease.data');
+		$dataFileName = $this->getDateFileName('lastrelease' . $branch . '.data');
 
 		if (is_file($dataFileName))
 		{
