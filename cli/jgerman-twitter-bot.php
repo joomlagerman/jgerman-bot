@@ -65,6 +65,9 @@ if ($latestGithubRelease->prerelease === true)
 	exit;
 }
 
+// Now send notification that we stated to do something.
+$notifierHelper->sendLogNotification('Start JGerman Twitter Bot');
+
 $releaseName = str_replace('for', 'für', $latestGithubRelease->name);
 
 $tweetText = $twitterApiHelper->getOption('tweetTemplate');
