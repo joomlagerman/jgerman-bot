@@ -70,7 +70,14 @@ $notifierHelper->sendLogNotification('Start JGerman Twitter Bot');
 
 $releaseName = str_replace('for', 'für', $latestGithubRelease->name);
 
-$tweetText = $twitterApiHelper->getOption('tweetTemplate');
+$tweetText = $twitterApiHelper->getOption('tweetTemplate_' . $branchName[0] . $branchName[1]);
+
+// Fallback to the default text
+if (empty($tweetText))
+{
+	$twitterApiHelper->getOption('tweetTemplate');
+}
+
 $tweetText = str_replace('[URL]', $latestGithubRelease->html_url, $tweetText);
 $tweetText = str_replace('[releaseNameVersion]', $releaseName, $tweetText);
 

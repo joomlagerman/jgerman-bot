@@ -47,5 +47,8 @@ $twitterOptions->set('consumerSecret', TWITTER_CONSUMER_SECRET);
 $twitterOptions->set('accessToken', TWITTER_ACCESS_TOKEN);
 $twitterOptions->set('accessTokenSecret', TWITTER_ACCESS_TOKEN_SECRET);
 $twitterOptions->set('tweetTemplate', TWITTER_TWEET_TEMPLATE);
+$twitterOptions->set('tweetTemplate_39', TWITTER_TWEET_TEMPLATE_39);
+$twitterOptions->set('tweetTemplate_310', TWITTER_TWEET_TEMPLATE_310);
+$twitterOptions->set('tweetTemplate_40', TWITTER_TWEET_TEMPLATE_40);
 
 $twitterApiHelper = new TwitterApiHelper($twitterOptions);
