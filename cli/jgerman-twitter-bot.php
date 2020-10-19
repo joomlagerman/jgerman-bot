@@ -49,17 +49,19 @@ $logHelper->writeLogMessage('Latest processed Release: ' . $latestPublishedRelea
  * $latestGithubRelease->tag_name;
  * // 3.9.19v2 for Joomla! 3.9.19
  * $latestGithubRelease->name;
- * // bool(true/false)
- * $latestGithubRelease->prerelease
+ * // array of assests / zips
+ * $latestGithubRelease->assets
  */
 
+ // Check whether this is a new release
 if (!version_compare($latestGithubRelease->tag_name, $latestPublishedRelease, '>'))
 {
 	$logHelper->writeLogMessage('End JGerman Twitter Bot');
 	exit;
 }
 
-if ($latestGithubRelease->prerelease === true)
+// When we have 4 or more assests all packages are uploaded
+if (count($latestGithubRelease->assets) >= 4)
 {
 	$logHelper->writeLogMessage('End JGerman Twitter Bot');
 	exit;
