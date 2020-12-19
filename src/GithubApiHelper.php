@@ -265,16 +265,38 @@ class GithubApiHelper
 		$body = str_replace('[sourcePullDiff]', $sourcePullDiffText, $body);
 
 		// Create the issue in the translation owner/repo
-		return $this->github->issues->create(
-			$this->getOption('translation.owner'),
-			$this->getOption('translation.repo'),
-			$sourceTranslationIssue->title,
-			$body,
-			NULL,
-			NULL,
-			$labels,
-			$this->getOption('translation.assigments')
-		);
+		try
+		{
+			return $this->github->issues->create(
+				$this->getOption('translation.owner'),
+				$this->getOption('translation.repo'),
+				$sourceTranslationIssue->title,
+				$body,
+				NULL,
+				NULL,
+				$labels,
+				$this->getOption('translation.assigments')
+			);
+		}
+		catch (\UnexpectedResponseException $e)
+		{
+			// Try to catch the error by sending the request without the source diff that could couse issues
+			$body = $this->getOption('translation.templagebody');
+			$body = str_replace('[sourcePullRequestUrl]', $sourcePull->_links->html->href, $body);
+			$body = str_replace('[sourcePullDiff]', '', $body);
+
+			return $this->github->issues->create(
+				$this->getOption('translation.owner'),
+				$this->getOption('translation.repo'),
+				$sourceTranslationIssue->title,
+				$body,
+				NULL,
+				NULL,
+				$labels,
+				$this->getOption('translation.assigments')
+			);
+		}
+
 	}
 
 	/**
