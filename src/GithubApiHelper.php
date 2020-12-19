@@ -278,7 +278,7 @@ class GithubApiHelper
 				$this->getOption('translation.assigments')
 			);
 		}
-		catch (\UnexpectedResponseException $e)
+		catch (\Exception $e)
 		{
 			// Try to catch the error by sending the request without the source diff that could couse issues
 			$body = $this->getOption('translation.templagebody');
