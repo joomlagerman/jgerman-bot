@@ -61,7 +61,7 @@ if (!version_compare($latestGithubRelease->tag_name, $latestPublishedRelease, '>
 }
 
 // When we have 4 or more assests all packages are uploaded
-if (count($latestGithubRelease->assets) >= 4)
+if (count($latestGithubRelease->assets) <= 4)
 {
 	$logHelper->writeLogMessage('End JGerman Twitter Bot');
 	exit;
