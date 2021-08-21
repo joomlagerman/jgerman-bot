@@ -333,6 +333,49 @@ class GithubApiHelper
 	}
 
 	/**
+	 * Returns the latest release information by branch
+	 *
+	 * @param   string  $targetBranch  The branch target of the source repo
+	 *
+	 * @return  string  The label
+	 *
+	 * @since   1.0
+	 */
+	public function getLatestGithubReleaseByBranch($branch)
+	{
+		// Get the last 5 releases
+		$last5releases = $this->github->repositories->releases->getList($this->getOption('translation.owner'), $this->getOption('translation.repo'), $page = 0, $limit = 5);
+
+		foreach ($last5releases as $tagName => $release)
+		{
+			// Check the branch from the tag name
+			$branchName = explode('.', $tagName);
+			$coreReleaseBranchName = $branchName[0] . '.' . $branchName[1];
+
+			// The tag name does not match, continue here
+			if ($coreReleaseBranchName !== $branch)
+			{
+				continue;
+			}
+
+			// Inital value
+			if (!isset($latestTag))
+			{
+				$latestTag = $tagName;
+			}
+
+			// When we have found a newer version use it
+			if (!version_compare($tagName, $latestTag, '>'))
+			{
+				$latestTag = $tagName;
+			}
+		}
+
+		// Return the latest Tage we found
+		return $this->github->repositories->releases->getByTag($this->getOption('translation.owner'), $this->getOption('translation.repo'), $latestTag);
+	}
+
+	/**
 	 * Returns the latest run date for the item
 	 *
 	 * @param   string  $branch  The core release branch
