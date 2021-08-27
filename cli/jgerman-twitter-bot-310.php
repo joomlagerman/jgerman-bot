@@ -31,15 +31,15 @@ require dirname(__DIR__) . '/includes/twitter-base.php';
 
 $logHelper->writeLogMessage('Start JGerman Twitter Bot');
 
-$latestGithubRelease = $githubApiHelper->getLatestGithubRelease();
-$logHelper->writeLogMessage('Latest JGerman GitHub Release: ' . $latestGithubRelease->tag_name);
+$latestGithubRelease = $githubApiHelper->getLatestGithubReleaseByBranch('3.10');
+$logHelper->writeLogMessage('Latest JGerman 3.10 GitHub Release: ' . $latestGithubRelease->tag_name);
 
 // Detect the branch name so we check against the correct target branch history file
 $branchName = explode('.', $latestGithubRelease->tag_name);
 $coreReleaseBranchName = $branchName[0] . '.' . $branchName[1];
 
 $latestPublishedRelease = (string) $githubApiHelper->getLatestPublishedRelease($coreReleaseBranchName);
-$logHelper->writeLogMessage('Latest processed Release: ' . $latestPublishedRelease);
+$logHelper->writeLogMessage('Latest processed 3.10 Release: ' . $latestPublishedRelease);
 
 /**
  * GitHub Variables
