@@ -264,8 +264,8 @@ class GithubApiHelper
 		$body = str_replace('[sourcePullRequestUrl]', $sourcePull->_links->html->href, $body);
 		$body = str_replace('[sourcePullDiff]', $sourcePullDiffText, $body);
 
-		// Create the issue in the translation owner/repo
-		if ( $sourcePull->user->login != 'joomla-translation-bot' )
+		// Create the issue in the translation owner/repo but skip PRs from the joomla-translation-bot
+		if ($sourcePull->user->login !== 'joomla-translation-bot')
 		{
 			try
 			{
