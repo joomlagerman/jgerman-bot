@@ -255,6 +255,7 @@ class GithubApiHelper
 
 		$sourcePull = $this->getSourcePull($sourceTranslationIssue->number);
 		$labels[]   = $this->getTranslationTargetBranchLabel($sourcePull->base->ref);
+		$assigments = $this->getOption('translation.assigments') ?: [];
 
 		$sourcePullDiff = $this->getSourcePullDiff($sourceTranslationIssue->number);
 		$sourcePullDiffText = PHP_EOL . '<details>' . PHP_EOL . '<summary>Click to expand the diff!</summary>' . PHP_EOL . PHP_EOL .
@@ -277,7 +278,7 @@ class GithubApiHelper
 					NULL,
 					NULL,
 					$labels,
-					$this->getOption('translation.assigments')
+					$assigments
 				);
 			}
 			catch (\Exception $e)
@@ -295,7 +296,7 @@ class GithubApiHelper
 					NULL,
 					NULL,
 					$labels,
-					$this->getOption('translation.assigments')
+					$assigments
 				);
 			}
 		}
