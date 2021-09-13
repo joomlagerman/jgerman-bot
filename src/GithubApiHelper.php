@@ -314,7 +314,7 @@ class GithubApiHelper
 	 */
 	private function getTranslationTargetBranchLabel($targetBranch)
 	{
-		if ($targetBranch === 'staging')
+		if ($targetBranch === '3.10-dev')
 		{
 			return 'Joomla! 3.x';
 		}

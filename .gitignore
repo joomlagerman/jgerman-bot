@@ -1,5 +1,6 @@
 ## Ignore dev folder
 .vscode
+.idea
 
 ## Ignore installed composer stuff
 vendor/
