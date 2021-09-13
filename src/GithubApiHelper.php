@@ -314,11 +314,6 @@ class GithubApiHelper
 	 */
 	private function getTranslationTargetBranchLabel($targetBranch)
 	{
-		if ($targetBranch === '3.10-dev')
-		{
-			return 'Joomla! 3.x';
-		}
-
 		return 'Joomla! ' . substr($targetBranch, 0, 1) . '.x';
 	}
 
