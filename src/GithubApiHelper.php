@@ -236,7 +236,7 @@ class GithubApiHelper
 			. (int) $pullrequestId
 		);
 
-		return HttpFactory::getHttp()->get($uri->toString(), ['Accept' => 'application/vnd.github.v3.diff', 'User-Agent' => $this->getOption('userAgent')])->body;
+		return HttpFactory::getHttp()->get($uri->toString(), ['Accept' => 'application/vnd.github.v3.diff', 'User-Agent' => $this->getOption('userAgent'), 'Authorization' => 'token ' . GITHUB_AUTHTOKEN])->body;
 	}
 
 	/**
