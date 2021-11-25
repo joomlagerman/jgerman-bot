@@ -314,7 +314,11 @@ class GithubApiHelper
 	 */
 	private function getTranslationTargetBranchLabel($targetBranch)
 	{
-		return 'Joomla! ' . substr($targetBranch, 0, 1) . '.x';
+		if ($targetBranch === '3.10-dev')
+		{
+			return 'Joomla! 3.10';
+		}
+		return 'Joomla! ' . substr($targetBranch, 0, 3);
 	}
 
 	/**
