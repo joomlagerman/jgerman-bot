@@ -69,7 +69,7 @@ Holds a template of the body to be posted by the bot. This string allows the fol
 - `[sourcePullDiff]` => The full diff of the original PR via an `<details>` tab
 
 ### Notifyer Config
-#### NOTIFYER_SLACK_ENABLED
+#### NOTIFYER_SLACK_ENABED
 
 True or False whether the Slack notification should be anabled
 
@@ -81,7 +81,7 @@ The webhook URL pointing to the slack channel where the message shoud be send to
 
 THe Slack username the message should be send as
 
-#### NOTIFYER_MATTERMOST_ENABLED
+#### NOTIFYER_MATTERMOST_ENABED
 
 True or False whether the Slack notification should be anabled
 
