@@ -33,10 +33,10 @@ $logHelper = new LogHelper(['logName' => 'jgerman']);
 
 // Notifyer Setup
 $notifyerOptions = new Registry;
-$notifyerOptions->set('slack.enabled', NOTIFYER_SLACK_ENABED);
+$notifyerOptions->set('slack.enabled', NOTIFYER_SLACK_ENABLED);
 $notifyerOptions->set('slack.webhookurl', NOTIFYER_SLACK_WEBHOOKURL);
 $notifyerOptions->set('slack.username', NOTIFYER_SLACK_USERNAME);
-$notifyerOptions->set('mattermost.enabled', NOTIFYER_MATTERMOST_ENABED);
+$notifyerOptions->set('mattermost.enabled', NOTIFYER_MATTERMOST_ENABLED);
 $notifyerOptions->set('mattermost.webhookurl', NOTIFYER_MATTERMOST_WEBHOOKURL);
 $notifyerOptions->set('telegram.enabled', NOTIFYER_TELEGRAM_ENABED);
 $notifyerOptions->set('telegram.botToken', NOTIFYER_TELEGRAM_BOTTOKEN);
