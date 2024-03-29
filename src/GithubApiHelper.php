@@ -240,6 +240,34 @@ class GithubApiHelper
 	}
 
 	/**
+	 * Get changed files by PR
+	 *
+	 * @param   string  $pullrequestId  The pullrequest id
+	 *
+	 * @return  object
+	 *
+	 * @link  https://docs.github.com/en/rest/pulls/pulls?apiVersion=2022-11-28#list-pull-requests-files
+	 *
+	 * @since   1.0
+	 */
+	private function getChangedTranslationFilesByPR($pullrequestId)
+	{
+		$changedFilesByPR = $this->github->pulls->getFiles($this->getOption('source.owner'), $this->getOption('source.repo'), $pullrequestId);
+
+		$translationFiles = [];
+
+		foreach ($changedFilesByPR as $key => $value)
+		{
+			if (strpos($value->filename, 'language/') !== false)
+			{
+				$translationFiles[] = $value->filename;
+			}
+		}
+
+		return $translationFiles;
+	}
+
+	/**
 	 * Creates an translation request issue
 	 *
 	 * @param   object  $sourceTranslationIssue  The sourceTranslationIssue Object
@@ -256,6 +284,27 @@ class GithubApiHelper
 		$sourcePull = $this->getSourcePull($sourceTranslationIssue->number);
 		$labels[]   = $this->getTranslationTargetBranchLabel($sourcePull->base->ref);
 		$assigments = $this->getOption('translation.assigments') ?: [];
+
+		// Add label within which client(s) the files are changed
+		$changedTranslationFiles = $this->getChangedTranslationFilesByPR($sourceTranslationIssue->number);
+
+		foreach ($changedTranslationFiles as $key => $filename)
+		{
+			$path = explode('/', $filename);
+
+			if (\in_array($path[0], ['administrator', 'api', 'installation']))
+			{
+				$labels[] = (string) $path[0];
+			}
+
+			if (\in_array($path[0], ['language']))
+			{
+				$labels[] = 'site';
+			}
+		}
+
+		// Make sure the lables are unique
+		$labels = array_values(array_unique($labels));
 
 		$sourcePullDiff = $this->getSourcePullDiff($sourceTranslationIssue->number);
 		$sourcePullDiffText = PHP_EOL . '<details>' . PHP_EOL . '<summary>Click to expand the diff!</summary>' . PHP_EOL . PHP_EOL .
