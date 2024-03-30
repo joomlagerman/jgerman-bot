@@ -29,6 +29,11 @@ require ROOT_PATH . '/vendor/autoload.php';
 // Load the github base configuration
 require dirname(__DIR__) . '/includes/github-base.php';
 
+$tmp = $githubApiHelper->getClosedAndMergedTranslationIssuesList(new DateTime('2024-03-28'));
+
+var_dump($tmp);
+exit;
+
 $logHelper->writeLogMessage('Start JGerman GitHub Bot');
 $notifierHelper->sendLogNotification('Start JGerman GitHub Bot');
 

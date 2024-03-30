@@ -170,7 +170,8 @@ class GithubApiHelper
 				continue;
 			}
 
-			if ($this->github->pulls->isMerged($this->getOption('source.owner'), $this->getOption('source.repo'), $issue->number))
+			if ($this->github->pulls->isMerged($this->getOption('source.owner'), $this->getOption('source.repo'), $issue->number)
+				&& !empty($this->getChangedTranslationFilesByPR($issue->number)))
 			{
 				$closedAndMerged[] = $issue;
 			}
@@ -194,8 +195,10 @@ class GithubApiHelper
 		$state  = 'closed';
 		$labels = urlencode($this->getOption('source.watchlabel'));
 
+		$labels = NULL;
+
 		return $this->github->issues->getListByRepository(
-			$this->getOption('source.owner'), $this->getOption('source.repo'), NULL, $state, NULL, NULL, $labels, NULL, NULL, $since
+			$this->getOption('source.owner'), $this->getOption('source.repo'), NULL, $state, NULL, NULL, $labels, NULL, NULL, $since, 0, 500
 		);
 	}
 
